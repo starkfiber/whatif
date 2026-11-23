@@ -1,3 +1,11 @@
+# WhatIF 3.2 · harness protocol extension
+
+Adds source-pinned Bastion CLI campaigns with fixed invariants, exact source/digest acknowledgement, cumulative budgets, once-only execution, retained command evidence and fresh-process oracle rechecking. Existing browser/backend modes remain separate.
+
+[Harness usage](skills/whatif/references/harness.md) · [3.2 qualification](docs/V3.2-HARNESS.md)
+
+The installed 3.1 tool attachment is not automatically replaced by a source update. Do not claim the new tools are attached until the host reloads the updated plugin.
+
 # WhatIF V3.1
 
 **Ask what could fail. Run the app. Challenge the evidence. Repair and replay.**

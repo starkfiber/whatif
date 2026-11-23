@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {planHarness,runHarness,verifyHarness} from './harness.mjs';
 import {qualifyTeams} from './agents/qualification.mjs';
 import {planBackendTeam} from './agents/backend.mjs';
 import {planAppTeam} from './agents/static-app.mjs';
@@ -13,6 +14,9 @@ import readline from 'node:readline';
 import path from 'node:path';
 import {makePlan,createCase,runCase,verifyCase,scanSource} from './core.mjs';
 const schemas={
+ whatif_harness_plan:{description:'Pin reviewed Bastion CLI source and Python for bounded protocol scenarios; no execution.',properties:{source:{type:'string'},python:{type:'string'},out:{type:'string'}},required:['source','python','out']},
+ whatif_harness_run:{description:'Run fixed local harness scenarios with exact source acknowledgement and plan digest. Reviewed host code; no OS sandbox, shell, network or model calls.',properties:{caseDirectory:{type:'string'},ackSource:{type:'string'},digest:{type:'string'}},required:['caseDirectory','ackSource','digest']},
+ whatif_harness_verify:{description:'Verify retained harness scenario evidence without re-execution.',properties:{caseDirectory:{type:'string'}},required:['caseDirectory']},
  whatif_qualify:{description:'Verify 2..20 recorded team runs and prepare a cross-application qualification report. No model calls or target traffic; observed evidence does not establish general performance or superiority.',properties:{teamDirectories:{type:'array',items:{type:'string'},minItems:2,maxItems:20,uniqueItems:true},out:{type:'string'}},required:['teamDirectories','out']},
  whatif_app_plan:{description:'Plan a reviewed static-web, python-sqlite or python-postgres application team from a pinned local manifest, hash assets and preserve application-specific oracles. No model calls or test traffic; execution requires macOS isolation.',properties:{manifest:{type:'string'},out:{type:'string'}},required:['manifest','out']},
  whatif_team_plan:{description:'Prepare an independent AI red/blue/critic team for the disposable macOS Node fixture. No model calls or test traffic. Review source disclosure and budgets.',properties:{source:{type:'string'},out:{type:'string'}},required:['source','out']},
@@ -44,7 +48,7 @@ const send=x=>process.stdout.write(JSON.stringify(x)+'\n');
 async function handle(m){
  if(m.method==='notifications/initialized'||m.id===undefined)return;
  const reply=result=>send({jsonrpc:'2.0',id:m.id,result});
- if(m.method==='initialize')return reply({protocolVersion:'2024-11-05',capabilities:{tools:{listChanged:false}},serverInfo:{name:'whatif',version:'3.1.0'}});
+ if(m.method==='initialize')return reply({protocolVersion:'2024-11-05',capabilities:{tools:{listChanged:false}},serverInfo:{name:'whatif',version:'3.2.0'}});
  if(m.method==='ping')return reply({});
  if(m.method==='tools/list')return reply({tools:Object.entries(schemas).map(([name,s])=>({name,description:s.description,inputSchema:{type:'object',properties:s.properties,required:s.required,additionalProperties:false}}))});
  if(m.method!=='tools/call')return send({jsonrpc:'2.0',id:m.id,error:{code:-32601,message:'Method not found'}});
@@ -54,6 +58,9 @@ async function handle(m){
  for(const k of s.required)if(args[k]===undefined)throw Error('Missing '+k);
  for(const [k,v]of Object.entries(args)){if(!s.properties[k])throw Error('Unknown argument '+k);const t=s.properties[k].type;if(t==='string'&&(typeof v!=='string'||!v.trim()))throw Error('Invalid '+k);if(t==='integer'&&!Number.isInteger(v))throw Error('Invalid '+k);if(t==='array'){const p=s.properties[k];if(!Array.isArray(v)||v.length<p.minItems||v.length>p.maxItems||v.some(item=>typeof item!=='string'||!item.trim())||p.uniqueItems&&new Set(v).size!==v.length)throw Error('Invalid '+k);}}
  let result;
+ if(name==='whatif_harness_plan')result=await planHarness({source:path.resolve(args.source),python:path.resolve(args.python),out:path.resolve(args.out)});
+ if(name==='whatif_harness_run')result=await runHarness(path.resolve(args.caseDirectory),{ackSource:args.ackSource,digest:args.digest});
+ if(name==='whatif_harness_verify')result=await verifyHarness(path.resolve(args.caseDirectory));
  if(name==='whatif_qualify')result=await qualifyTeams({directories:args.teamDirectories.map(d=>path.resolve(d)),out:path.resolve(args.out)});
  if(name==='whatif_app_plan'){const manifest=path.resolve(args.manifest),spec=JSON.parse(await fs.readFile(manifest));result=await (['python-sqlite','python-postgres'].includes(spec.runner)?planBackendTeam:planAppTeam)({manifest,out:path.resolve(args.out)});}
  if(name==='whatif_team_plan')result=await planTeam({source:path.resolve(args.source),out:path.resolve(args.out)});

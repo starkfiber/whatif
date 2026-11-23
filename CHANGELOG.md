@@ -1,3 +1,11 @@
+## 3.2.0 — reviewed local harness protocols
+
+- Add plan/run/verify API, CLI and MCP surfaces for seven fixed Bastion protocol scenarios.
+- Pin source, interpreter and adapter; require exact source acknowledgement and plan digest.
+- Bound command attempts, captured output and total wall time; preserve used and interrupted cases.
+- Retain command evidence and recheck fixed assertions during fresh verification.
+- Document trusted host execution separately from OS-isolated application teams and comparative benchmarks.
+
 # 3.1.0 — PostgreSQL, workers and concurrent API users
 
 - Private PostgreSQL17 clusters with restricted app roles, exact cold-seed resets, real restart checks and verified removal of data, sockets and generated administrator secrets.

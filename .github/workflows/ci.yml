@@ -10,6 +10,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/checkout@v4
+        with:
+          repository: starkfiber/Bastion
+          ref: a9b2d493a4e68da2730d0330c1c441fcda1085e6
+          path: fixtures/bastion-harness
+          persist-credentials: false
       - run: npm test
+        env:
+          WHATIF_BASTION_SOURCE: ${{ github.workspace }}/fixtures/bastion-harness
       - run: npm run check
       - run: npm run demo

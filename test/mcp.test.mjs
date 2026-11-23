@@ -14,7 +14,7 @@ test('MCP discovery and real plan/run/verify lifecycle',async t=>{
  t.after(async()=>{child.stdin.end();await new Promise(r=>child.once('exit',r));rl.close();});
  const call=(method,params)=>new Promise((resolve,reject)=>{const next=++id;const timer=setTimeout(()=>reject(Error('MCP timeout')),10000);pending.set(next,m=>{clearTimeout(timer);resolve(m);});child.stdin.write(JSON.stringify({jsonrpc:'2.0',id:next,method,params})+'\n');});
  const init=await call('initialize',{protocolVersion:'2024-11-05',capabilities:{},clientInfo:{name:'test',version:'1'}});assert.equal(init.result.serverInfo.name,'whatif');assert.equal(init.result.serverInfo.version,JSON.parse(await fs.readFile(new URL('../package.json',import.meta.url))).version);
- const list=await call('tools/list');assert.equal(list.result.tools.length,26);
+ const list=await call('tools/list');assert.equal(list.result.tools.length,29);
  const tool=async(name,args)=>{const r=await call('tools/call',{name,arguments:args});assert.equal(r.result.isError,false);return JSON.parse(r.result.content[0].text);};
  const team=path.join(root,'team');
  const planned=await tool('whatif_team_plan',{source:path.resolve('examples/agent-app'),out:team});assert.equal(planned.execution,'not-started');
