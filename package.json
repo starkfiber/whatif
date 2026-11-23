@@ -1,6 +1,6 @@
 {
   "name": "whatif-plugin",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": true,
   "type": "module",
   "description": "Evidence-led browser and API testing with isolated macOS static-web, SQLite and PostgreSQL repair trials",
@@ -25,4 +25,3 @@
     "url": "https://github.com/starkfiber/whatif.git"
   }
 }
-
