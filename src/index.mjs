@@ -5,3 +5,5 @@ export {createCampaign,runCampaign,verifyCampaign,compareCampaigns,engineDoctor}
 export {planLab,inspectLab,runLab,verifyLab,replayLab,compareLabs} from './lab/lab.mjs';
 export {qualifyTeams} from './agents/qualification.mjs';
 export {planBackendTeam} from './agents/backend.mjs';
+
+export {planHarness,runHarness,verifyHarness} from './harness.mjs';
