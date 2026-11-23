@@ -1,0 +1,42 @@
+{
+  "baseline": {
+    "counts": {
+      "tests": 158,
+      "pass": 140,
+      "fail": 8,
+      "skipped": 10
+    },
+    "failedTests": [
+      "call budget during final review rolls back a passing but unapproved patch",
+      "macOS Python backend denies sentinel access/spawn/outbound and retains SQLite state across restart",
+      "macOS copied app serves owned loopback HTTP with launch and cleanup proof",
+      "macOS isolated scripts deny filesystem escape, spawn and outbound connections",
+      "real PG17 private Unix cluster: app role isolation, concurrent integrity, exact seed reset, restart and cleanup",
+      "request reservation rejects before HTTP and no model calls are fabricated",
+      "reused independent session is rejected",
+      "static host serves only listed assets in a path with spaces and binds edited source"
+    ]
+  },
+  "enhanced": {
+    "counts": {
+      "tests": 164,
+      "pass": 146,
+      "fail": 8,
+      "skipped": 10
+    },
+    "failedTests": [
+      "call budget during final review rolls back a passing but unapproved patch",
+      "macOS Python backend denies sentinel access/spawn/outbound and retains SQLite state across restart",
+      "macOS copied app serves owned loopback HTTP with launch and cleanup proof",
+      "macOS isolated scripts deny filesystem escape, spawn and outbound connections",
+      "real PG17 private Unix cluster: app role isolation, concurrent integrity, exact seed reset, restart and cleanup",
+      "request reservation rejects before HTTP and no model calls are fabricated",
+      "reused independent session is rejected",
+      "static host serves only listed assets in a path with spaces and binds edited source"
+    ]
+  },
+  "newTestCount": 6,
+  "failureSetUnchanged": true,
+  "runtime": "Node 24.22.3 from installed ChatGPT application",
+  "scope": "same Mac, separate baseline checkout and enhanced checkout; broad suite not green; no live-provider or capacity claim"
+}
